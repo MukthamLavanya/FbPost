@@ -5,6 +5,9 @@ from .models import Post, User, Comment
 from .serializers import UserSerializer, PostSerializer, CommentSerializer
 
 
+class ADI():
+    pass
+
 
 class CommentViewSet(viewsets.GenericViewSet):
     queryset = Comment.objects.all()
