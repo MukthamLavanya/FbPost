@@ -1,0 +1,413 @@
+{
+  "swagger": "2.0",
+  "host": "localhost:8080",
+  "basePath": "/api/crm",
+  "info": {
+    "version": "1.0.0",
+    "title": "Customer Relationship Management",
+    "description": "A simple CRM app",
+    "contact": {
+      "name": "AdiLakshmiBonala",
+      "email": "bonalaadilakshmi938@gmaill.com"
+    }
+  },
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+  },
+  "definitions": {
+    "EnquiryDetails": {
+      "type": "object",
+      "properties": {
+        "enquiry_id": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
+        },
+        "country_code": {
+          "type": "string"
+        },
+        "course_name": {
+          "type": "string"
+        },
+        "submitted_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "enquiry_id",
+        "username",
+        "email",
+        "phone_number",
+        "country_code",
+        "course_name",
+        "submitted_at"
+      ]
+    }
+  },
+  "parameters": {
+    "LoginParameter": {
+      "name": "Login",
+      "in": "body",
+      "description": "Login",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      }
+    },
+    "CreateEnquiryDetails": {
+      "name": "CreateEnquiryDetails",
+      "in": "body",
+      "description": "Create enquiry details",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "country_code": {
+            "type": "string"
+          },
+          "course_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "email",
+          "phone_number",
+          "country_code",
+          "course_name"
+        ]
+      }
+    },
+    "ClaimEnquiryDetails": {
+      "name": "ClaimEnquiryDetails",
+      "in": "body",
+      "description": "Claim Enquiry Details",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "enquiry_details_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "enquiry_details_id"
+        ]
+      }
+    },
+    ""
+  },
+  "responses": {
+    "CreateEnquiryDetailsBadRequestResponse": {
+      "description": "Bad Request Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "res_status": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "GIVEN_ENQUIRY_DETAILS_ALREADY_EXISTS"
+              ]
+            }
+          }
+        },
+        "required": [
+          "res_status"
+        ]
+      }
+    },
+    "ClaimEnquiryDetailsBadRequestResponse": {
+      "description": "Bad Request Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "res_status": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "CAN_NOT_CLAIM_ALREADY_CLAIMED_ENQUIRY_DETAILS"
+              ]
+            }
+          }
+        },
+        "required": [
+          "res_status"
+        ]
+      }
+    },
+    "LoginBadRequestResponse": {
+      "description": "Bad Request Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "res_status": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "INCORRECT_PASSWORD",
+                "UNEXPECTED_ERROR_OCCURRED_TO_GET_TOKEN_DETAILS"
+              ]
+            }
+          }
+        },
+        "required": [
+          "res_status"
+        ]
+      }
+    },
+    "LoginNotFoundResponse": {
+      "description": "NotFound Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "res_status": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "USER_DOES_NOT_EXISTS"
+              ]
+            }
+          }
+        },
+        "required": [
+          "res_status"
+        ]
+      }
+    },
+    "LoginSuccessResponse": {
+      "description": "Success Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "access_token",
+          "refresh_token"
+        ]
+      }
+    },
+    "ClaimEnquiryDetailsNotFoundResponse": {
+      "description": "NotFound Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "res_status": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "INVALID_ENQUIRY_DETAILS_ID"
+              ]
+            }
+          }
+        },
+        "required": [
+          "res_status"
+        ]
+      }
+    },
+    "GetEnquiryDetailsSuccessResponse": {
+      "description": "Success Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "public_enquiry_details": {
+            "$ref": "#/definitions/EnquiryDetails"
+          },
+          "user_claimed_enquiry_details": {
+            "$ref": "#/definitions/EnquiryDetails"
+          }
+        },
+        "required": [
+          "public_enquiry_details",
+          "user_claimed_enquiry_details"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "/login": {
+      "get": {
+        "name": "LOgin",
+        "description": "sdfsdfs",
+        "parameters": [
+          {
+            "name": "Login",
+            "in": "body",
+            "description": "Login",
+            "schema": {
+              "properties": {
+                "comment_id": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "post_id": {
+                  "type": "integer"
+                },
+                "about_comment": {
+                  "type": "string"
+                }
+              },
+              "required": [
+              ],
+              "type": "object"
+            }
+          }
+        ]
+      }
+    },
+    "/update" : {
+      "put" : {
+        "name" : "Update",
+        "description" : "updating",
+        "parameters" : [
+          {
+            "name" : "update",
+            "in" : "body",
+            "description" : "update",
+            "schema": {
+              "type": "object",
+              "properties" : {
+                "comment_id": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "post_id": {
+                  "type": "integer"
+                },
+                "about_comment": {
+                  "type" : "string"
+                }
+              },
+              "required": [
+                "comment_id",
+                "about_comment"
+              ]
+            }
+          }
+        ]
+
+      }
+    },
+    "/create" : {
+      "post" : {
+        "name" : "Create",
+        "description" : "creating",
+        "parameters" : [
+          {
+            "name" : "create",
+            "in" : "body",
+            "description" : "create",
+            "schema": {
+              "type": "object",
+              "properties" : {
+                "comment_id": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "post_id": {
+                  "type": "integer"
+                },
+                "about_comment": {
+                  "type" : "string"
+                }
+              },
+              "required": [
+                "about_comment",
+                "post_id",
+                "user_id"
+              ]
+            }
+          }
+        ]
+
+      }
+    },
+    "/destroy" : {
+      "delete" : {
+        "name" : "Delete",
+        "description" : "deleted",
+        "parameters" : [
+          {
+            "name" : "delete",
+            "in" : "body",
+            "description" : "delete",
+            "schema": {
+              "type": "object",
+              "properties" : {
+                "comment_id": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "post_id": {
+                  "type": "integer"
+                },
+                "about_comment": {
+                  "type" : "string"
+                }
+              },
+              "required": [
+                "comment_id"
+              ]
+            }
+          }
+        ]
+
+      }
+    }
+  }
+}
