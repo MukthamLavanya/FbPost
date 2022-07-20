@@ -5,51 +5,90 @@ from .models import Post, User, Comment
 from .serializers import UserSerializer, PostSerializer, CommentSerializer
 
 
-class ADI():
-    pass
+class PostViewSet(viewsets.GenericViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
-class Lavu():
-    pass
+    def create(self, request, *args, **kwargs):
+        from .serializers import PostSerializer
 
+        serial_obj = PostSerializer(data={"name": kwargs["name"],
+                                          "description": kwargs["description"],
+                                          "user": kwargs["user_id"]})
+        if serial_obj.is_valid(raise_exception=True):
+            post = serial_obj.save()
+            return HttpResponse(post)
+
+
+    def list(self, request, *args, **kwargs):
+        from .serializers import PostSerializer
+        from .models import Post
+
+        post_obj = Post.objects.all()
+        serial_obj = PostSerializer(post_obj, many=True)
+        response = serial_obj.data
+        return HttpResponse(response)
+
+    def update(self, request, *args, **kwargs):
+        from .serializers import PostSerializer
+        from .models import Post
+
+        post_obj = Post.objects.get(id=kwargs["user_id"])
+        post_obj.description = kwargs["description"]
+        post_obj.save()
+        return HttpResponse(post_obj.description)
+
+    def destroy(self, request, *args, **kwargs):
+        from .serializers import PostSerializer
+        from .models import Post
+
+        post_obj = Post.objects.get(id=kwargs["user_id"])
+        response = post_obj.delete()
+        return HttpResponse(response)
 
 
 class CommentViewSet(viewsets.GenericViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
-
     def create(self, request, *args, **kwargs):
-        name = kwargs["name"]
         from .serializers import CommentSerializer, ValidateCommentSerializer
 
-        validate = ValidateCommentSerializer(data={"about_comment": name})
+        validate = ValidateCommentSerializer(data={"about_comment": kwargs["about_comment"]})
         if validate.is_valid(raise_exception=True):
-            serializer_obj = CommentSerializer(data={"about_comment": name})
+            serializer_obj = CommentSerializer(data={"about_comment": kwargs["about_comment"],
+                                                     "post": kwargs["post_id"],
+                                                     "user": kwargs["user_id"]})
             if serializer_obj.is_valid(raise_exception=True):
                 comment = serializer_obj.save()
-                ser_obj = CommentSerializer(comment)
-                return HttpResponse(ser_obj.data)
-
+                return HttpResponse(comment.about_comment)
 
     def update(self, request, *args, **kwargs):
-        from .serializers_practice import update_comment
+        from .serializers import CommentSerializer, ValidateCommentSerializer
+        from .models import Comment
 
-        response = update_comment(about_comment="Nice", id=11)
-        return HttpResponse(response)
+        comment_obj = Comment.objects.get(id=kwargs["comment_id"])
+        comment_obj.about_comment = kwargs["text"]
+        comment_obj.save()
 
+        return HttpResponse(comment_obj.about_comment)
 
-    def get(self, request, *args, **kwargs):
-        from .serializers_practice import get_comment
+    def list(self, request, *args, **kwargs):
+        from .serializers import CommentSerializer, ValidateCommentSerializer
+        from .models import Comment
 
-        response = get_comment()
+        comment_obj = Comment.objects.all()
+        serializer_obj = CommentSerializer(comment_obj, many=True)
+        response = serializer_obj.data
         return HttpResponse(response)
 
     def destroy(self, request, *args, **kwargs):
-        from .serializers_practice import destroy_comment
+        from .serializers import CommentSerializer, ValidateCommentSerializer
+        from .models import Comment
 
-        response = destroy_comment()
+        comment_obj = Comment.objects.get(id=kwargs["comment_id"])
+        response = comment_obj.delete()
         return HttpResponse(response)
-
 
 
 # class UserViewSet(viewsets.GenericViewSet):

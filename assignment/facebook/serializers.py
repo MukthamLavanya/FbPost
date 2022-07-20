@@ -3,25 +3,25 @@ from rest_framework import serializers
 from .models import User, Post, Comment
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
         fields = '__all__'
 
 
-class PostSerializer(serializers.HyperlinkedModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
         fields = "__all__"
 
 
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ["about_comment"]
+        fields = "__all__"
 
 
 class ValidateUserSerializer(serializers.Serializer):
@@ -29,7 +29,7 @@ class ValidateUserSerializer(serializers.Serializer):
     id_number = serializers.IntegerField(required=True)
 
     class Meta:
-        fields = ["name", "id_number"]
+        fields = "__all__"
 
 
 class ValidatePostSerializer(serializers.Serializer):
@@ -44,7 +44,7 @@ class ValidateCommentSerializer(serializers.Serializer):
     about_comment = serializers.CharField(required=True)
 
     class Meta:
-        fields = ["about_comment"]
+        fields = "__all__"
 
 
 
