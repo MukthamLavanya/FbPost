@@ -129,8 +129,7 @@
           "enquiry_details_id"
         ]
       }
-    },
-    ""
+    }
   },
   "responses": {
     "CreateEnquiryDetailsBadRequestResponse": {
@@ -272,184 +271,105 @@
     }
   },
   "paths": {
-    "/login": {
+    "/enquiries/v1/": {
       "get": {
-        "name": "LOgin",
-        "description": "sdfsdfs",
+        "operationId": "get_enquiry_details",
+        "summary": "Get Enquiry Details",
+        "description": "Get Enquiry Details",
+        "security": [
+          {
+            "oauth": [
+              "read"
+            ]
+          }
+        ],
         "parameters": [
-          {
-            "name": "Login",
-            "in": "body",
-            "description": "Login",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "type": "string"
-                },
-                "password": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "email",
-                "password"
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "/update" : {
-      "put" : {
-        "name" : "Update",
-        "description" : "updating",
-        "parameters" : [
-          {
-            "name" : "update",
-            "in" : "body",
-            "description" : "update",
-            "schema": {
-              "type": "object",
-              "properties" : {
-                "id": {
-                  "type": "integer"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "password": {
-                  "type" : "string"
-                },
-                "updated": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "id",
-                "name",
-                "email",
-                "password",
-                "updated"
-              ]
-            }
-          }
-        ]
-
-      }
-    },
-    "/create" : {
-      "post" : {
-        "name" : "Create",
-        "description" : "creating",
-        "parameters" : [
-          {
-            "name" : "create",
-            "in" : "body",
-            "description" : "create",
-            "schema": {
-              "type": "object",
-              "properties" : {
-                "id": {
-                  "type": "integer"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "password": {
-                  "type" : "string"
-                }
-              },
-              "required": [
-                "id",
-                "name",
-                "email",
-                "password"
-              ]
-            }
-          }
-        ]
-
-      }
-    },
-    "/destroy" : {
-      "delete" : {
-        "name" : "Delete",
-        "description" : "deleted",
-        "parameters" : [
-          {
-            "name" : "delete",
-            "in" : "body",
-            "description" : "delete",
-            "schema": {
-              "type": "object",
-              "properties" : {
-                "id": {
-                  "type": "integer"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "password": {
-                  "type" : "string"
-                }
-              },
-              "required": [
-                "id",
-                "name",
-                "email",
-                "password"
-              ]
-            }
-          }
         ],
         "responses": {
           "200": {
-            "description" : "Success Response",
-            "schema": {
-              "type": "object",
-              "properties" : {
-                "id": {
-                  "type": "integer"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "password": {
-                  "type" : "string"
-                }
-              },
-              "required": [
-                "id",
-                "name",
-                "email",
-                "password"
-              ]
-            }
-          },
+            "$ref": "#/responses/GetEnquiryDetailsSuccessResponse"
+          }
+        }
+      }
+    },
+    "/enquiry/create/v1/": {
+      "post": {
+        "operationId": "create_enquiry_details",
+        "summary": "Create Enquiry Details",
+        "description": "Create Enquiry Details",
+        "security": [
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/CreateEnquiryDetails"
+          }
+        ],
+        "responses": {
           "400": {
-            "description" : "400 Response",
-            "schema": {
-              "type": "object",
-              "properties" : {
-                "status": {
-                  "type": "string",
-                  "enum": ["Inavlid User", "Inavlid Course", "Invalid Fee"]
-                }
-              }
-            }
+            "$ref": "#/responses/CreateEnquiryDetailsBadRequestResponse"
+          },
+          "200": {
+            "description": "Success Response"
+          }
+        }
+      }
+    },
+    "/enquiry/claim/v1/": {
+      "post": {
+        "operationId": "claim_enquiry_details",
+        "summary": "Claim enquiry details",
+        "description": "Claim enquiry details",
+        "security": [
+          {
+            "oauth": [
+              "write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/ClaimEnquiryDetails"
+          }
+        ],
+        "responses": {
+          "400": {
+            "$ref": "#/responses/ClaimEnquiryDetailsBadRequestResponse"
+          },
+          "404": {
+            "$ref": "#/responses/ClaimEnquiryDetailsNotFoundResponse"
+          },
+          "200": {
+            "description": "Success Response"
+          }
+        }
+      }
+    },
+    "/login/v1/": {
+      "post": {
+        "operationId": "login",
+        "summary": "Login",
+        "description": "Login",
+        "security": [
+          {
+            "oauth": [
+              "read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/LoginParameter"
+          }
+        ],
+        "responses": {
+          "400": {
+            "$ref": "#/responses/LoginBadRequestResponse"
+          },
+          "404": {
+            "$ref": "#/responses/LoginNotFoundResponse"
+          },
+          "200": {
+            "$ref": "#/responses/LoginSuccessResponse"
           }
         }
       }
