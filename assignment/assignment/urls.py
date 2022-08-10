@@ -19,5 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('facebook/', include('facebook.urls')),
     path('payments/', include('payments.urls')),
+    path('userprofile/', include('userprofile.urls')),
     path('admin/', admin.site.urls),
 ]

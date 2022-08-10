@@ -51,10 +51,8 @@ class ValidateCourseSerializer(serializers.Serializer):
 
 
 class ValidateUserCourseSerializer(serializers.Serializer):
-    user_id = serializers.IntegerField(required=True)
-    course_id = serializers.IntegerField(required=True)
-    name = serializers.CharField(required=True)
-    fees = serializers.IntegerField(required=True)
+    user = serializers.IntegerField(required=True)
+    course = serializers.IntegerField(required=True)
 
     class Meta:
         fields = "__all__"
@@ -62,8 +60,8 @@ class ValidateUserCourseSerializer(serializers.Serializer):
 
 class ValidateCoursePaymentSerializer(serializers.Serializer):
     amount_paid = serializers.IntegerField(required=True)
-    user_id = serializers.IntegerField(required=True)
-    course_id = serializers.IntegerField(required=True)
+    user = serializers.IntegerField(required=True)
+    course = serializers.IntegerField(required=True)
 
     class Meta:
         fields = "__all__"

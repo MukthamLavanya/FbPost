@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'userprofile',
     'facebook',
     'payments',
     'rest_framework',
